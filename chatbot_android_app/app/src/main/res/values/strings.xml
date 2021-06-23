@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">chatbotapp</string>
+    <string name="type_here_to_chat_with_bot">Type here to chat with bot</string>
+    <string name="send">Send</string>
+</resources>
