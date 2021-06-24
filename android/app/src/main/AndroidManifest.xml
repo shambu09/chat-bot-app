@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.acro.chatbot">
+    package="com.example.myapp">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Chat Bot"
