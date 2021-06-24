@@ -1,5 +1,7 @@
 import 'dart:ui';
+import 'dart:math';
 
+import 'package:myapp/models/chatMessageModel.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/chatDetailPage.dart';
 
@@ -11,7 +13,7 @@ Future<dynamic> createDialog(BuildContext context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Model server address: "),
+          title: Text("Model Server Address: "),
           content: TextField(
             controller: _controller,
           ),
@@ -21,7 +23,6 @@ Future<dynamic> createDialog(BuildContext context) {
               child: Text("Add"),
               onPressed: () {
                 tmp = _controller.text.toString();
-                print("-------------------------------homePageStyle: $tmp");
                 Navigator.of(context).pop(tmp);
               },
             )
@@ -31,18 +32,20 @@ Future<dynamic> createDialog(BuildContext context) {
 }
 
 class HomePageStyle extends StatelessWidget {
-  final tab = new TabBar(tabs: <Tab>[
-    new Tab(icon: new Icon(Icons.arrow_forward)),
-    new Tab(icon: new Icon(Icons.arrow_downward)),
-    new Tab(icon: new Icon(Icons.arrow_back)),
-  ]);
-
-  String address = "";
+  List<ChatMessage> messages = [];
+  String modelip = "";
+  Function handleResponse = () {};
+  Function handleClick = () {};
   Function callback = () {};
 
-  HomePageStyle(Function _callback, String _address) {
-    callback = _callback;
-    address = _address;
+  HomePageStyle(Function callback, String modelip, Function handleClick,
+      Function handleResponse, messages) {
+    print("-------------------------------changing: $modelip");
+    this.callback = callback;
+    this.modelip = modelip;
+    this.handleClick = handleClick;
+    this.handleResponse = handleResponse;
+    this.messages = messages;
   }
 
   @override
@@ -79,7 +82,6 @@ class HomePageStyle extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              print("pressed model");
                               createDialog(context)
                                   .then((value) => callback(value));
                             },
@@ -94,7 +96,10 @@ class HomePageStyle extends StatelessWidget {
                                   width: 2,
                                 ),
                                 Text(
-                                  "Add Model Server",
+                                  this.modelip == ""
+                                      ? "Add a model server"
+                                      : this.modelip.substring(
+                                          0, min(this.modelip.length, 30)),
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold),
@@ -121,8 +126,8 @@ class HomePageStyle extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ChatDetailPage(""),
-            Icon(Icons.directions_transit),
+            ChatDetailPage(messages, modelip, handleResponse, handleClick),
+            Icon(Icons.developer_mode),
           ],
         ),
       ),
