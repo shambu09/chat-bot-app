@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:myapp/screens/chatDetailPage.dart';
 import 'package:myapp/screens/chatQAPair.dart';
 
-Future<dynamic> createDialog(BuildContext context) {
-  TextEditingController _controller = TextEditingController();
+Future<dynamic> createDialog(
+  BuildContext context,
+  TextEditingController _controller,
+) {
   String tmp = "";
 
   return showDialog(
@@ -41,6 +43,9 @@ class HomePageStyle extends StatelessWidget {
   Function handleClick = () {};
   Function handleClick_t = () {};
   Function callback = () {};
+  int flag = 0;
+  TextEditingController _controller = TextEditingController();
+  Function handleTabChange = () {};
 
   HomePageStyle(
     Function callback,
@@ -51,6 +56,8 @@ class HomePageStyle extends StatelessWidget {
     List<ChatMessage> messages_t,
     Function handleResponse_t,
     Function handleClick_t,
+    int flag,
+    Function handleTabChange,
   ) {
     print("-------------------------------changing: $modelip");
     this.callback = callback;
@@ -61,6 +68,8 @@ class HomePageStyle extends StatelessWidget {
     this.messages_t = messages_t;
     this.handleResponse_t = handleResponse_t;
     this.handleClick_t = handleClick_t;
+    this.flag = flag;
+    this.handleTabChange = handleTabChange;
   }
 
   @override
@@ -97,7 +106,8 @@ class HomePageStyle extends StatelessWidget {
                           ),
                           child: GestureDetector(
                             onTap: () {
-                              createDialog(context)
+                              _controller.text = modelip;
+                              createDialog(context, _controller)
                                   .then((value) => callback(value));
                             },
                             child: Row(
@@ -131,6 +141,9 @@ class HomePageStyle extends StatelessWidget {
             ),
           ),
           bottom: TabBar(
+            onTap: (index) {
+              handleTabChange(index);
+            },
             labelColor: Colors.blue,
             unselectedLabelColor: Colors.blue[200],
             tabs: [
@@ -141,8 +154,19 @@ class HomePageStyle extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            ChatDetailPage(messages, modelip, handleResponse, handleClick),
-            ChatQAPair(messages_t, modelip, handleResponse_t, handleClick_t),
+            ChatDetailPage(
+              messages,
+              modelip,
+              handleResponse,
+              handleClick,
+            ),
+            ChatQAPair(
+              messages_t,
+              modelip,
+              handleResponse_t,
+              handleClick_t,
+              flag,
+            ),
           ],
         ),
       ),

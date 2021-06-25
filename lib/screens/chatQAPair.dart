@@ -8,13 +8,20 @@ class ChatQAPair extends StatelessWidget {
 
   Function handleResponse = () {};
   Function handleClick = () {};
+  int flag = 0;
 
-  ChatQAPair(List<ChatMessage> messages, String modelip,
-      Function handleResponse, Function handleClick) {
+  ChatQAPair(
+    List<ChatMessage> messages,
+    String modelip,
+    Function handleResponse,
+    Function handleClick,
+    int flag,
+  ) {
     this.modelip = modelip;
     this.messages = messages;
     this.handleClick = handleClick;
     this.handleResponse = handleResponse;
+    this.flag = flag;
   }
 
   @override
@@ -96,7 +103,8 @@ class ChatQAPair extends StatelessWidget {
                     ),
                     FloatingActionButton(
                       onPressed: () {
-                        handleClick(myController.text);
+                        flag += 1;
+                        handleClick(myController.text, flag);
                         myController.clear();
                       },
                       child: Icon(

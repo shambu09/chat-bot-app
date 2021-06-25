@@ -9,8 +9,12 @@ class ChatDetailPage extends StatelessWidget {
   Function handleResponse = () {};
   Function handleClick = () {};
 
-  ChatDetailPage(List<ChatMessage> messages, String modelip,
-      Function handleResponse, Function handleClick) {
+  ChatDetailPage(
+    List<ChatMessage> messages,
+    String modelip,
+    Function handleResponse,
+    Function handleClick,
+  ) {
     this.modelip = modelip;
     this.messages = messages;
     this.handleClick = handleClick;

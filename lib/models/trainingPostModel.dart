@@ -1,8 +1,8 @@
 import 'package:myapp/models/chatMessageModel.dart';
 
 class QAPair {
-  final String question;
-  final String answer;
+  String question;
+  String answer;
 
   QAPair({
     required this.question,
