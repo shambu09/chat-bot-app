@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:myapp/models/chatMessageModel.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/chatDetailPage.dart';
+import 'package:myapp/screens/chatQAPair.dart';
 
 Future<dynamic> createDialog(BuildContext context) {
   TextEditingController _controller = TextEditingController();
@@ -33,19 +34,33 @@ Future<dynamic> createDialog(BuildContext context) {
 
 class HomePageStyle extends StatelessWidget {
   List<ChatMessage> messages = [];
+  List<ChatMessage> messages_t = [];
   String modelip = "";
   Function handleResponse = () {};
+  Function handleResponse_t = () {};
   Function handleClick = () {};
+  Function handleClick_t = () {};
   Function callback = () {};
 
-  HomePageStyle(Function callback, String modelip, Function handleClick,
-      Function handleResponse, messages) {
+  HomePageStyle(
+    Function callback,
+    String modelip,
+    Function handleClick,
+    Function handleResponse,
+    List<ChatMessage> messages,
+    List<ChatMessage> messages_t,
+    Function handleResponse_t,
+    Function handleClick_t,
+  ) {
     print("-------------------------------changing: $modelip");
     this.callback = callback;
     this.modelip = modelip;
     this.handleClick = handleClick;
     this.handleResponse = handleResponse;
     this.messages = messages;
+    this.messages_t = messages_t;
+    this.handleResponse_t = handleResponse_t;
+    this.handleClick_t = handleClick_t;
   }
 
   @override
@@ -127,7 +142,7 @@ class HomePageStyle extends StatelessWidget {
         body: TabBarView(
           children: [
             ChatDetailPage(messages, modelip, handleResponse, handleClick),
-            Icon(Icons.developer_mode),
+            ChatQAPair(messages_t, modelip, handleResponse_t, handleClick_t),
           ],
         ),
       ),
