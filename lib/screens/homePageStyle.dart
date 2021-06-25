@@ -91,15 +91,23 @@ class HomePageStyle extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Chat",
-                          style: TextStyle(
-                              fontSize: 32, fontWeight: FontWeight.bold),
-                        ),
+                        Container(
+                            padding: EdgeInsets.only(
+                                left: 12, right: 14, top: 4, bottom: 4),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.blue[200],
+                            ),
+                            child: Text(
+                              "Chat",
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold),
+                            )),
                         Container(
                           padding: EdgeInsets.only(
                               left: 8, right: 8, top: 2, bottom: 2),
-                          height: 30,
+                          height: 40,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
                             color: Colors.pink[50],

@@ -21,7 +21,7 @@ class _HomePage extends State<HomePage> {
 
   String tmp = "";
   final myController = TextEditingController();
-  String modelip = "https://jsonplaceholder.typicode.com/albums/1";
+  String modelip = "https://d1d0aa2a32bd.ngrok.io";
 
   QAPair q = QAPair(question: "question", answer: "answer");
 
@@ -33,7 +33,10 @@ class _HomePage extends State<HomePage> {
         }
       } else {
         if (modelip.substring(modelip.length - 4) != "/add") {
-          modelip += "/add";
+          if (modelip[modelip.length - 1] == '/') {
+            modelip += "add";
+          } else
+            modelip += "/add";
         }
       }
       messages.insert(
@@ -65,32 +68,31 @@ class _HomePage extends State<HomePage> {
                 messageType: "status"));
       }
     });
-    print("-------------------------------homePage: $address");
   }
 
   sendReq(String query) async {
+    var url = "$modelip?qs=$query";
     try {
-      final response = await http.get(Uri.parse(modelip));
-      if (response.statusCode == 200) {
-        handleResponse(jsonDecode(response.body)["title"]);
-      } else {
-        throw Exception('Failed to load album');
-      }
+      final response = await http.get(
+        Uri.parse(url),
+      );
+      handleResponse(response.body);
     } catch (e) {
+      print(url.toString());
       handleResponse("Invalid Config");
     }
   }
 
-  sendReq_t(String query) async {
+  sendReq_t() async {
+    var url = "https://d1d0aa2a32bd.ngrok.io/add?${qa.toQuery()}";
+
     try {
-      final response = await http.get(Uri.parse(modelip));
-      if (response.statusCode == 200) {
-        handleResponse_t(jsonDecode(response.body)["title"]);
-      } else {
-        throw Exception('Failed to load album');
-      }
+      var k = await http.get(
+        Uri.parse(url),
+      );
+      handleGetResponse(k.body);
     } catch (e) {
-      handleResponse_t("Invalid Config");
+      handleGetResponse("Invalid Config");
     }
   }
 
@@ -101,15 +103,34 @@ class _HomePage extends State<HomePage> {
     });
   }
 
+  handleGetResponse(String res) {
+    setState(() {
+      messages_t.insert(0,
+          ChatMessage(messageContent: "\u2713 ${res}", messageType: "status"));
+      flag = 0;
+      messages_t.insert(
+        0,
+        ChatMessage(
+            messageContent: "Enter Question: ", messageType: "receiver"),
+      );
+    });
+  }
+
   handleResponse_t(String res) {
     setState(() {
       messages_t.insert(
           0, ChatMessage(messageContent: res, messageType: "receiver"));
+
+      flag = 0;
+      messages_t.insert(
+        0,
+        ChatMessage(
+            messageContent: "Enter Question: ", messageType: "receiver"),
+      );
     });
   }
 
   handleClick(String tmp) {
-    print("----------------------------------------$modelip");
     setState(() {
       if (tmp == "/clear") {
         messages.clear();
@@ -124,7 +145,6 @@ class _HomePage extends State<HomePage> {
   }
 
   handleClick_t(String tmp, int flag_t) {
-    print("----------------------------------------$modelip");
     setState(() {
       if (tmp == "/clear") {
         messages_t.clear();
@@ -155,22 +175,13 @@ class _HomePage extends State<HomePage> {
           0,
           ChatMessage(messageContent: tmp, messageType: "sender"),
         );
-        messages_t.insert(
-          0,
-          ChatMessage(messageContent: "\u2713 Added OK", messageType: "status"),
-        );
-        print(jsonEncode(qa));
+
+        print("https://d1d0aa2a32bd.ngrok.io/?${qa.toQuery()}");
+        sendReq_t();
         messages_t.insert(
           0,
           ChatMessage(
               messageContent: jsonEncode(qa).toString(), messageType: "status"),
-        );
-
-        flag = 0;
-        messages_t.insert(
-          0,
-          ChatMessage(
-              messageContent: "Enter Question: ", messageType: "receiver"),
         );
       }
     });

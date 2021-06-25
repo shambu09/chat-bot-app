@@ -9,11 +9,8 @@ class QAPair {
     required this.answer,
   });
 
-  Map toJson() {
-    return {
-      "qs": this.question,
-      "ans": this.answer,
-    };
+  String toQuery() {
+    return "qs=$question&ans=$answer";
   }
 
   ChatMessage toChatMessage() {
