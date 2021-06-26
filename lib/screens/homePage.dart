@@ -84,7 +84,7 @@ class _HomePage extends State<HomePage> {
   }
 
   sendReq_t() async {
-    var url = "https://d1d0aa2a32bd.ngrok.io/add?${qa.toQuery()}";
+    var url = "$modelip?${qa.toQuery()}";
 
     try {
       var k = await http.get(
